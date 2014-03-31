@@ -1,13 +1,15 @@
 (in-package someshell)
 
-;;;; TODO:
-;;; More sophisticated parser
-;;; More portable: Though I like GNU CLISP, it should not REQUIRE it.
-;;; shell command completion
-;;;
-
 ;;; Generic Utility Functions and Macros
-(defmacro with-gensyms (symbols &body body)
+(defmacro with-gensyms! (symbols &body body)
+  "Example: (with-gensyms (apple badger cat dog)
+           (list apple badger cat dog))
+=> (#:APPLE-8886 #:BADGER-8887 #:CAT-8888 #:DOG-8889)
+
+Accept a list of symbols and a BODY.
+Return a LET form which binds the symbols to GENSYMED names,
+which include the original symbol name to make debugging
+easier, around the body argument."
   `(let ,(mapcar (lambda (s)
                    `(,s (gensym ,(concatenate 'string (symbol-name s) "-"))))
                  (remove-duplicates symbols))
@@ -17,7 +19,7 @@
   `(not (or ,@predicate-statements)))
 
 (defmacro range (lower-limit upper-limit &optional step)
-  (with-gensyms (accumulator)
+  (with-gensyms! (accumulator)
     `(loop for ,accumulator from ,lower-limit to ,upper-limit ,@(when step (list 'by step))
         collecting ,accumulator)))
 
@@ -51,7 +53,7 @@
   "Break a string constituting a shell command up
 into sub-strings, and submit them to the
 RUN-PROGRAM macro for execution."
-  (with-gensyms (command-list command arguments)
+  (with-gensyms! (command-list command arguments)
     `(let* ((,command-list (cl-ppcre:split "\\s\\s" ,input-string))
             (,command      (car ,command-list))
             (,arguments    (cdr ,command-list)))
@@ -89,7 +91,7 @@ RUN-PROGRAM macro for execution."
       nil))
 
 (defmacro run-shell-alias (command-string alias-list)
-  (with-gensyms (command-list)
+  (with-gensyms! (command-list)
     `(let ((,command-list (cl-ppcre:split "\\s" ,command-string)))
        (eval (append (cdr (assoc
                            (intern (string-upcase (car ,command-list)))

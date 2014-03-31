@@ -1,0 +1,47 @@
+#+TITLE: Someshell readme
+#+AUTHOR: Riley
+#+OPTIONS: toc:nil num:nil
+
+* About
+I love EShell, but I don't like that it's bound to Emacs, and I've always been fascinated by the prospect of a system shell written
+in Common Lisp or Scheme.\\
+This is largely the result of my internet connection going out over the weekend and working through Chapter 3 of a recently bought
+copy of [[http://letoverlambda.com][Let Over Lambda]].
+
+* Installation
+Right now, someshell requires the use of [[http://clisp.org][GNU CLISP]] (not to be confused with [[https://www.gnu.org/software/gcl/][GCL]]), which is alright since it comes with all sorts of
+nice features like in-built readline support, and simple utilities for interacting with external programs (through the EXT package.)
+This presumes you have Quicklisp installed, which will manage retrieval of the CL-PPCRE library, which is currently the only
+required external dependency outside of CLISP itself.\\
+
+To install, simply perform the following commands:
+#+BEGIN_SRC lisp :session :eval no :tangle no
+  ;; Presuming that you've cloned SOMESHELL into ~/Downloads/someshell/
+  (push #p"~/Downloads/someshell/" asdf:*central-registry*)
+  (ql:quickload "someshell")
+
+  ;; To launch SOMESHELL from the REPL, run:
+  (ss:shell-reader%)
+
+  ;; If you want to make an executable of someshell Use something like the
+  ;; following:
+
+  (saveinitmem "someshell" :quiet t :init-function 'ss:shell-reader% :executable t)
+
+  ;; and a ~7MB executable will be created containing a memory image of the
+  ;; current running Lisp environment. If you like, you can at this point close
+  ;; CLISP and launch SOMESHELL by running ./someshell from your normal *nix shell
+
+#+END_SRC
+
+* TODO
+** TODO Ranging from trivial to difficult
+- More sophisticated parser (e.g. detect spaces in file names)
+- More portable: Though I like GNU CLISP, it should not REQUIRE it.
+- shell command completion
+- pretty printing for multi-line commands
+- built-in pager
+- aliasing shell programs with Lisp functions (e.g. typing 'ls RET' would execute '(dir "./*")')
+
+** TODO Fantasy
+- auto-complete like interface for tab completions
