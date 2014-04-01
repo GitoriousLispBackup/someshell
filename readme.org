@@ -11,8 +11,9 @@ copy of [[http://letoverlambda.com][Let Over Lambda]].
 
 * Installation
 Right now, someshell requires the use of [[http://clisp.org][GNU CLISP]] (not to be confused with [[https://www.gnu.org/software/gcl/][GCL]]), which is alright since it comes with all sorts of
-nice features like in-built readline support, and simple utilities for interacting with external programs (through the EXT package.)
-This presumes you have Quicklisp installed, which will manage retrieval of the CL-PPCRE library, which is currently the only
+nice features like in-built readline support, tab-completion for package-names, functions, symbols, etc. and simple utilities for interacting with external programs (through the EXT package.)
+
+This assumes you have Quicklisp installed, which will manage retrieval of the CL-PPCRE library, which is currently the only
 required external dependency outside of CLISP itself.
 
 To install, simply perform the following commands:
@@ -36,13 +37,16 @@ To install, simply perform the following commands:
 #+END_SRC
 
 * TODOS:
-** TODO Ranging from trivial to difficult
+** Ranging from trivial to difficult
 - More sophisticated parser (e.g. detect spaces in file names)
+- More sophisticated string -> sexpr parser
 - More portable: Though I like GNU CLISP, it should not REQUIRE it.
 - shell command completion
-- pretty printing for multi-line commands
-- built-in pager
-- aliasing shell programs with Lisp functions (e.g. typing 'ls RET' would execute '(dir "./*")')
+- pretty printing for multi-line commands and Lisp forms
+- aliasing shell programs with Lisp functions (e.g. typing 'ls RET' would
+  execute '(dir "./*")')
 
-** TODO Fantasy
-- auto-complete like interface for tab completions
+** Fantasy
+- auto-complete like interface
+- built-in pager
+- something like Emacs' IDO mode for command completion

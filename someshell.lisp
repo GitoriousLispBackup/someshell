@@ -1,6 +1,8 @@
 (in-package someshell)
 
 ;;; Generic Utility Functions and Macros
+
+;; Plug the holes through which unwanted variable capture may occur.
 (defmacro with-gensyms! (symbols &body body)
   "Example: (with-gensyms (apple badger cat dog)
            (list apple badger cat dog))
@@ -15,24 +17,32 @@ easier, around the body argument."
                  (remove-duplicates symbols))
      ,@body))
 
+;; Nicer syntax for (not (or ...))
 (defmacro nor (&rest predicate-statements)
   `(not (or ,@predicate-statements)))
 
+;; Nicer syntax for e.g. (and (string= ...)
+;;                            (string= ...)
+;;                            ...)
+(defmacro string-equalp-batch (comparator a-string &rest strings)
+  `(,comparator ,@(mapcar #'(lambda (s) `(string= ,a-string ,s))
+                          strings)))
+
+;; Generating ranges is useful, right?
 (defmacro range (lower-limit upper-limit &optional step)
   (with-gensyms! (accumulator)
     `(loop for ,accumulator from ,lower-limit to ,upper-limit ,@(when step (list 'by step))
         collecting ,accumulator)))
 
+;; If ranges are useful, so are zero-indexed lists of numbers
 (defun iota (upper-limit)
   (range 0 (- upper-limit 1)))
 
-(defmacro string-equalp-batch (comparator a-string &rest strings)
-  `(,comparator ,@(mapcar #'(lambda (s) `(string= ,a-string ,s))
-                          strings)))
-
+;; Return a sexpr from a string
 (defmacro sexpr-extractor (string-sexpr)
   `(read-from-string ,string-sexpr))
 
+;; Check if a string is a sexpr
 (defun sexp-p (expr-string)
   "Test a string to see if it is an s-expression"
   (cond ((and (char= (char expr-string 0) #\()
@@ -102,15 +112,15 @@ RUN-PROGRAM macro for execution."
   `(ext:dir ,@(when directory
                     `(,directory))))
 
-(defun print-friendly-path ()
+(defun print-friendly-path (current-path)
   (cl-ppcre:regex-replace
    (format nil "~d" (ext:absolute-pathname "~"))
-   (format nil "~d" (ext:absolute-pathname "."))
+   current-path
    "~/"))
 
 (defun shell-reader% ()
   (let ((aliases (copy-list (return-aliases))))
-    (loop (format t "(~d)→ " (print-friendly-path))
+    (loop (format t "(~d)→ " (print-friendly-path (format nil "~d" (ext:absolute-pathname "."))))
        (let ((current-expr (read-line)))
          (cond ((sexp-p current-expr)
                 (format t "~d~%" (eval (sexpr-extractor current-expr))))
