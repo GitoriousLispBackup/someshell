@@ -35,7 +35,7 @@ To install, simply perform the following commands:
 
 #+END_SRC
 
-* TODO
+* TODOS:
 ** TODO Ranging from trivial to difficult
 - More sophisticated parser (e.g. detect spaces in file names)
 - More portable: Though I like GNU CLISP, it should not REQUIRE it.
