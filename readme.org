@@ -4,7 +4,8 @@
 
 * About
 I love EShell, but I don't like that it's bound to Emacs, and I've always been fascinated by the prospect of a system shell written
-in Common Lisp or Scheme.\\
+in Common Lisp or Scheme.
+
 This is largely the result of my internet connection going out over the weekend and working through Chapter 3 of a recently bought
 copy of [[http://letoverlambda.com][Let Over Lambda]].
 
@@ -12,7 +13,7 @@ copy of [[http://letoverlambda.com][Let Over Lambda]].
 Right now, someshell requires the use of [[http://clisp.org][GNU CLISP]] (not to be confused with [[https://www.gnu.org/software/gcl/][GCL]]), which is alright since it comes with all sorts of
 nice features like in-built readline support, and simple utilities for interacting with external programs (through the EXT package.)
 This presumes you have Quicklisp installed, which will manage retrieval of the CL-PPCRE library, which is currently the only
-required external dependency outside of CLISP itself.\\
+required external dependency outside of CLISP itself.
 
 To install, simply perform the following commands:
 #+BEGIN_SRC lisp :session :eval no :tangle no
