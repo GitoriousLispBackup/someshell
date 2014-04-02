@@ -31,7 +31,7 @@ easier, around the body argument."
 ;; Generating ranges is useful, right?
 (defmacro range (lower-limit upper-limit &optional step)
   (with-gensyms! (accumulator)
-    `(loop for ,accumulator from ,lower-limit to ,upper-limit ,@(when step (list 'by step))
+    `(loop for ,accumulator from ,lower-limit to ,upper-limit ,@(when step `(by ,step))
         collecting ,accumulator)))
 
 ;; If ranges are useful, so are zero-indexed lists of numbers

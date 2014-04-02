@@ -1,5 +1,5 @@
-#+TITLE: Someshell readme
-#+AUTHOR: Riley
+#+TITLE: nil
+#+AUTHOR: nil
 #+OPTIONS: toc:nil num:nil
 
 * About
@@ -50,3 +50,5 @@ To install, simply perform the following commands:
 - auto-complete like interface
 - built-in pager
 - something like Emacs' IDO mode for command completion
+- configuration system
+- hooks
